@@ -1,0 +1,1 @@
+export const GET_LIST = 'BABYGOODS/GET_LIST'
