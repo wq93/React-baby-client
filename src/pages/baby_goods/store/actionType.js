@@ -1,1 +1,1 @@
-export const GET_LIST = 'BABYGOODS/GET_LIST'
+export const GET_GOOD_LIST = 'BABYGOODS/GET_GOOD_LIST'
