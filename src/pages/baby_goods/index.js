@@ -1,11 +1,14 @@
 import React, {Component} from 'react'
-import {Button, Table, Divider, Tag} from 'antd';
+import axios from '../../common/featch'
+import {Button, Modal, Table, Divider, Tag, message} from 'antd';
 import {connect} from 'react-redux';
 import {actionCreators} from './store';
 import {goodType, sourceType} from '../../common/config'
 import {edit} from './component/edit'
 import Edit from "./component/edit";
 import './index.less'
+
+const confirm = Modal.confirm;
 
 class Baby extends Component {
   constructor(props) {
@@ -43,16 +46,16 @@ class Baby extends Component {
       },
       {
         title: '类别',
-        dataIndex: 'type',
-        key: 'type',
+        dataIndex: 'showType',
+        key: 'showType',
         render: text => (
           <span>{<Tag color='blue' key={text}>{text}</Tag>}</span>
         ),
       },
       {
         title: '来源',
-        dataIndex: 'source',
-        key: 'source',
+        dataIndex: 'showSource',
+        key: 'showSource',
         render: text => (
           <span>{<Tag color='blue' key={text}>{text}</Tag>}</span>
         ),
@@ -88,7 +91,8 @@ class Baby extends Component {
                dataSource={data}/>
         {this.state.visible ?
           <Edit visible={this.state.visible}
-                handlerChangeAddModal={this.handlerChangeAddModal}></Edit> : ''}
+                handlerChangeAddModal={this.handlerChangeAddModal}
+                getGoodsList={this.props.getGoodsList}></Edit> : ''}
       </div>
     )
   }
@@ -98,8 +102,32 @@ class Baby extends Component {
     this.handlerChangeAddModal()
   }
 
-  handlerClickRemove(record) {
-    console.log('handlerClickRemove', record)
+  handlerClickRemove({uuid}) {
+    confirm({
+      title: '删除',
+      content: '确认删除此商品吗?',
+      okText: '确认',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk: function () {
+        return new Promise(async resolve => {
+          try {
+            let url = `deleteGood?uuid=${uuid}/1`
+            let res = await axios({
+              method: 'delete',
+              url,
+            })
+            res.code === 0 ? message.success('删除成功') : message.error('删除失败')
+          } finally {
+            setTimeout(resolve)
+            this.props.getGoodsList()
+          }
+        })
+      }.bind(this),
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   }
 
   handlerChangeAddModal() {
@@ -113,15 +141,15 @@ const serializetionData = (list) => {
   list.forEach(item => {
     let type = goodType[item.type]
     let source = sourceType[item.source]
-    item.type = type
-    item.source = source
+    item.showType = type
+    item.showSource = source
   })
   return list
 }
+
 const mapState = (state) => ({
   goodsList: state.getIn(['babyGoods', 'goodsList']),
 });
-
 const mapDispatch = (dispatch) => ({
   getGoodsList() {
     dispatch(actionCreators.getGoodsList())

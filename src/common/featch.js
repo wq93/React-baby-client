@@ -11,8 +11,9 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(response => {
   if(parseInt(response.data.code, 10) === 0) {
-    return response.data.data
+    return response.data
   }
+  return response.data
 }, error => {
   console.log('请求error', error.message);
   return Promise.reject(error);

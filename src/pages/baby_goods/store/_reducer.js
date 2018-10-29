@@ -3,7 +3,7 @@ import {fromJS} from 'immutable';
 
 const defaultState = fromJS({
   goodsList: [],
-  currentGoodDetail: {}
+  currentGoodDetail: {},
 });
 
 
@@ -16,6 +16,12 @@ const setGoodsList = (state, action) => {
 const setGoodDetail = (state, action) => {
   return state.merge({
     currentGoodDetail: fromJS(action.goodDetail),
+  });
+};
+
+const updataGoodState = (state, action) => {
+  return state.merge({
+    updataGoodState: action.updataGoodState,
   });
 };
 

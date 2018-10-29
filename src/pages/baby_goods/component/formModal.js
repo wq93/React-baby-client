@@ -12,10 +12,12 @@ class App extends React.Component {
   }
 
   handleSubmit = () => {
+    const {uuid} = this.props.currentGoodDetail.toJS()
     let formData
     this.props.form.validateFields((err, values) => {
       if (!err) {
         formData = values
+        formData.uuid = uuid
       } else {
         formData = false
       }
