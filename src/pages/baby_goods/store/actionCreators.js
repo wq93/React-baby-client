@@ -6,6 +6,11 @@ const GoodsList = (goodList) => ({
   goodList
 })
 
+const GoodDetail = (goodDetail) => ({
+  type: actionType.CURRENT_GOOD_DETAIL,
+  goodDetail
+})
+
 export const getGoodsList = () => {
   return async (dispatch) => {
     try {
@@ -16,6 +21,11 @@ export const getGoodsList = () => {
     } finally {
 
     }
+  }
+}
 
+export const currentGoodDetail = (view) => {
+  return (dispatch) => {
+    dispatch(GoodDetail(view))
   }
 }

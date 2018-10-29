@@ -67,7 +67,14 @@
     "test": "node scripts/test.js"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "no-undef": "off",
+      "no-restricted-globals": "off",
+      "no-unused-vars": "off",
+      "no-useless-constructor": "off",
+      "no-script-url": "off"
+    }
   },
   "browserslist": [
     ">0.2%",
@@ -126,15 +133,9 @@
       ]
     ]
   },
-  "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "no-undef": "off",
-      "no-restricted-globals": "off",
-      "no-unused-vars": "off",
-      "no-useless-constructor": "off",
-      "no-script-url":"off"
-    }
-  },
-  "proxy": "http://localhost:3030/baby"
+  "proxy": "http://localhost:3030/baby",
+  "devDependencies": {
+    "less": "^3.8.1",
+    "less-loader": "^4.1.0"
+  }
 }

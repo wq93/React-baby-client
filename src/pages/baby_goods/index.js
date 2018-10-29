@@ -1,11 +1,21 @@
 import React, {Component} from 'react'
-import {Table, Divider, Tag} from 'antd';
+import {Button, Table, Divider, Tag} from 'antd';
 import {connect} from 'react-redux';
 import {actionCreators} from './store';
+import {goodType, sourceType} from '../../common/config'
+import {edit} from './component/edit'
+import Edit from "./component/edit";
+import './index.less'
 
 class Baby extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      visible: false
+    }
+    this.handlerClickEdit = this.handlerClickEdit.bind(this)
+    this.handlerClickRemove = this.handlerClickRemove.bind(this)
+    this.handlerChangeAddModal = this.handlerChangeAddModal.bind(this)
   }
 
   componentDidMount() {
@@ -13,64 +23,101 @@ class Baby extends Component {
   }
 
   render() {
-    const columns = [{
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: text => <a href="javascript:;">{text}</a>,
-    }, {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-    }, {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    }, {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: tags => (
-        <span>
-      {tags.map(tag => <Tag color="blue" key={tag}>{tag}</Tag>)}
+    const {goodsList} = this.props
+    const columns = [
+      {
+        title: '商品',
+        dataIndex: 'displayName',
+        key: 'displayName',
+        render: text => <a href='javascript:;'>{text}</a>,
+      },
+      {
+        title: '数量',
+        dataIndex: 'count',
+        key: 'count',
+      },
+      {
+        title: '价格',
+        dataIndex: 'price',
+        key: 'price',
+      },
+      {
+        title: '类别',
+        dataIndex: 'type',
+        key: 'type',
+        render: text => (
+          <span>{<Tag color='blue' key={text}>{text}</Tag>}</span>
+        ),
+      },
+      {
+        title: '来源',
+        dataIndex: 'source',
+        key: 'source',
+        render: text => (
+          <span>{<Tag color='blue' key={text}>{text}</Tag>}</span>
+        ),
+      },
+      {
+        title: '备注',
+        dataIndex: 'remark',
+        key: 'remark',
+      },
+      {
+        title: '操作',
+        key: 'action',
+        width: 160,
+        render: (record) => (
+          <span>
+          <a href='javascript:;' onClick={() => this.handlerClickEdit(record)}>编辑</a>
+          <Divider type="vertical"/>
+          <a href='javascript:;' onClick={() => this.handlerClickRemove(record)}>删除</a>
     </span>
-      ),
-    }, {
-      title: 'Action',
-      key: 'action',
-      render: (text, record) => (
-        <span>
-      <a href="javascript:;">Invite {record.name}</a>
-      <Divider type="vertical"/>
-      <a href="javascript:;">Delete</a>
-    </span>
-      ),
-    }];
+        ),
+      }];
+    const data = serializetionData(goodsList.toJS())
+    return (
+      <div className="baby-goods-wrapper">
+        <Button className='baby-goods-add'
+                type="primary"
+                icon="plus-circle"
+                onClick={() => {
+                  this.handlerChangeAddModal()
+                }}>新增</Button>
+        <Table rowKey="uuid"
+               columns={columns}
+               dataSource={data}/>
+        {this.state.visible ?
+          <Edit visible={this.state.visible}
+                handlerChangeAddModal={this.handlerChangeAddModal}></Edit> : ''}
+      </div>
+    )
+  }
 
-    const data = [{
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
-    }, {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
-    }, {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
-    }];
-    console.log(this.props.goodsList)
-    return (<Table columns={columns} dataSource={data}/>)
+  handlerClickEdit(record) {
+    this.props.currentGoodDetail(record)
+    this.handlerChangeAddModal()
+  }
+
+  handlerClickRemove(record) {
+    console.log('handlerClickRemove', record)
+  }
+
+  handlerChangeAddModal() {
+    this.setState({
+      visible: !this.state.visible
+    })
   }
 }
 
+const serializetionData = (list) => {
+  list.forEach(item => {
+    let type = goodType[item.type]
+    let source = sourceType[item.source]
+    item.type = type
+    item.source = source
+  })
+  return list
+}
 const mapState = (state) => ({
   goodsList: state.getIn(['babyGoods', 'goodsList']),
 });
@@ -78,6 +125,9 @@ const mapState = (state) => ({
 const mapDispatch = (dispatch) => ({
   getGoodsList() {
     dispatch(actionCreators.getGoodsList())
+  },
+  currentGoodDetail(view) {
+    dispatch(actionCreators.currentGoodDetail(view))
   }
 });
 
