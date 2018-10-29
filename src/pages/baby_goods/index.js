@@ -6,6 +6,7 @@ import {actionCreators} from './store';
 import {goodType, sourceType} from '../../common/config'
 import {edit} from './component/edit'
 import Edit from "./component/edit";
+import Add from "./component/add";
 import './index.less'
 
 const confirm = Modal.confirm;
@@ -14,11 +15,13 @@ class Baby extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      visible: false
+      visible: false,
+      addModalvisible: false
     }
     this.handlerClickEdit = this.handlerClickEdit.bind(this)
     this.handlerClickRemove = this.handlerClickRemove.bind(this)
     this.handlerChangeAddModal = this.handlerChangeAddModal.bind(this)
+    this.handlerChangeEditModal = this.handlerChangeEditModal.bind(this)
   }
 
   componentDidMount() {
@@ -91,15 +94,19 @@ class Baby extends Component {
                dataSource={data}/>
         {this.state.visible ?
           <Edit visible={this.state.visible}
-                handlerChangeAddModal={this.handlerChangeAddModal}
+                handlerChangeEditModal={this.handlerChangeEditModal}
                 getGoodsList={this.props.getGoodsList}></Edit> : ''}
+        {this.state.addModalvisible ?
+          <Add addModalvisible={this.state.addModalvisible}
+               handlerChangeAddModal={this.handlerChangeAddModal}
+               getGoodsList={this.props.getGoodsList}></Add> : ''}
       </div>
     )
   }
 
   handlerClickEdit(record) {
     this.props.currentGoodDetail(record)
-    this.handlerChangeAddModal()
+    this.handlerChangeEditModal()
   }
 
   handlerClickRemove({uuid}) {
@@ -112,7 +119,7 @@ class Baby extends Component {
       onOk: function () {
         return new Promise(async resolve => {
           try {
-            let url = `deleteGood?uuid=${uuid}/1`
+            let url = `deleteGood?uuid=${uuid}`
             let res = await axios({
               method: 'delete',
               url,
@@ -130,9 +137,15 @@ class Baby extends Component {
     });
   }
 
-  handlerChangeAddModal() {
+  handlerChangeEditModal() {
     this.setState({
       visible: !this.state.visible
+    })
+  }
+
+  handlerChangeAddModal() {
+    this.setState({
+      addModalvisible: !this.state.addModalvisible
     })
   }
 }

@@ -15,13 +15,13 @@ class Edit extends Component {
   }
 
   render() {
-    const {handlerChangeAddModal, visible} = this.props
+    const {handlerChangeEditModal, visible} = this.props
     return (
       <Modal
-        title="新增"
+        title="编辑"
         visible={visible}
         onOk={this.handlerOk}
-        onCancel={handlerChangeAddModal}
+        onCancel={handlerChangeEditModal}
         maskClosable={false}
         destroyOnClose={true}
         confirmLoading={this.state.confirmLoading}
@@ -39,32 +39,31 @@ class Edit extends Component {
 
 
   handlerOk() {
-    const {updataGoodDetail, handlerChangeAddModal, getGoodsList} = this.props
+    const {updataGoodDetail, handlerChangeEditModal, getGoodsList} = this.props
     let values = this.child.handleSubmit() // 使用子组件的方法
-    this.setState({
-      confirmLoading: true,
-    });
-    values && updataGoodDetail(values).then((resolve) => {
-      let {code, data} = resolve
-      setTimeout(() => {
-        this.setState({
-          confirmLoading: false,
-        })
-        handlerChangeAddModal()
-        code === 0 ? message.success('保存成功') : message.error(data.msg)
-        getGoodsList()
-      }, 300)
-    })
+    if (values) {
+      this.setState({
+        confirmLoading: true,
+      });
+      updataGoodDetail(values).then((resolve) => {
+        let {code, data} = resolve
+        setTimeout(() => {
+          this.setState({
+            confirmLoading: false,
+          })
+          handlerChangeEditModal()
+          code === 0 ? message.success('保存成功') : message.error(data.msg)
+          getGoodsList()
+        }, 300)
+      })
+    }
   }
 }
 
-const mapState = (state) => ({
-  updataGoodState: state.getIn(['babyGoods', 'updataGoodState']),
-});
 const mapDispatch = (dispatch) => ({
   updataGoodDetail(detail) {
     return dispatch(actionCreators.updataGoodDetail(detail))
   },
 });
 
-export default connect(mapState, mapDispatch)(Edit)
+export default connect(null, mapDispatch)(Edit)

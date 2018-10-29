@@ -1,6 +1,5 @@
 import React from 'react'
 import {Form, Select, Input, InputNumber, Button} from 'antd';
-import {actionCreators} from "../store";
 import {connect} from 'react-redux';
 
 const FormItem = Form.Item;
@@ -12,12 +11,13 @@ class App extends React.Component {
   }
 
   handleSubmit = () => {
-    const {uuid} = this.props.currentGoodDetail.toJS()
+    const {currentGoodDetail, modalType} = this.props
+    const {uuid} = currentGoodDetail.toJS()
     let formData
     this.props.form.validateFields((err, values) => {
       if (!err) {
         formData = values
-        formData.uuid = uuid
+        modalType === 'editGood' && (formData.uuid = uuid)
       } else {
         formData = false
       }
@@ -28,8 +28,8 @@ class App extends React.Component {
   componentDidMount() {
     const {currentGoodDetail, modalType} = this.props
     const {displayName, count, price, source, type, remark} = currentGoodDetail.toJS()
-    this.props.onRef(this);
-    this.props.form.setFieldsValue(this.props.modalType === 'addGood' ?
+    this.props.onRef(this)
+    this.props.form.setFieldsValue(modalType === 'addGood' ?
       {
         count: 1,
         source: '1',

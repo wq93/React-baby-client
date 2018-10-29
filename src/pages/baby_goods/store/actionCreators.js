@@ -36,6 +36,18 @@ export const updataGoodDetail = (detail) => {
   }
 }
 
+export const addGoodDetail = (detail) => {
+  return async (dispatch) => {
+    try {
+      let url = '/addGoods'
+      let params = detail
+      return await axios.post(url, params)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
 export const currentGoodDetail = (view) => {
   return (dispatch) => {
     dispatch(GoodDetail(view))
