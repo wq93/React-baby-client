@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import axios from '../../common/featch'
+import axios from '../../common/js/featch'
 import {Button, Modal, Table, Divider, Tag, message} from 'antd';
 import {connect} from 'react-redux';
-import {actionCreators} from './store';
-import {goodType, sourceType} from '../../common/config'
+import {actionCreators} from '../../store/baby_goods';
+import {goodType, sourceType} from '../../common/js/config'
 import {edit} from './component/edit'
 import Edit from "./component/edit";
 import Add from "./component/add";

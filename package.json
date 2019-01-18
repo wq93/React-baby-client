@@ -135,7 +135,7 @@
   },
   "proxy": "http://localhost:3030/baby",
   "devDependencies": {
-    "less": "^3.8.1",
+    "less": "^3.9.0",
     "less-loader": "^4.1.0"
   }
 }

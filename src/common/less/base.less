@@ -1,0 +1,71 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.ant-layout {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  background: #fff;
+}
+
+.ant-layout-header {
+  background: #fff;
+  border-bottom: 1px solid #999999;
+}
+
+.ant-layout-content {
+  flex: auto;
+  overflow-y: auto;
+}
+
+.content-wrapper {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.ant-layout-footer {
+  height: 60px;
+  border-top: 1px solid #999999;
+  background: #fff;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(125, 125, 125, 0.7);
+  height: 50px;
+  outline-offset: -2px;
+  outline: 2px solid #fff;
+  -webkit-border-radius: 4px;
+
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(125, 125, 125, 0.7);
+  height: 50px;
+  -webkit-border-radius: 4px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: #fff;
+  -webkit-border-radius: 0;
+}
+
+html, body, .ant-layout-content {
+  scrollbar-face-color: rgba(125, 125, 125, 0.7);
+  scrollbar-highlight-color: #fff;
+  scrollbar-shadow-color: #eeeeee;
+  scrollbar-3dlight-color: #eeeeee;
+  scrollbar-arrow-color: #000;
+  scrollbar-track-color: #fff;
+  scrollbar-darkshadow-color: #fff;
+}

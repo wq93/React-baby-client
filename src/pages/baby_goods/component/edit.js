@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux';
 import {Modal} from 'antd';
 import WrappedForm from './formModal'
-import {actionCreators} from "../store";
+import {actionCreators} from "../../../store/baby_goods";
 import {message} from 'antd';
 
 class Edit extends Component {

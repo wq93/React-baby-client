@@ -1,4 +1,4 @@
-import axios from '../../../common/featch'
+import axios from '../../common/js/featch'
 import * as actionType from './actionType'
 import {message} from 'antd';
 
